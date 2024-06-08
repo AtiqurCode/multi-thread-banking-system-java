@@ -1,7 +1,7 @@
 import account.Account;
-import transaction.Transaction;
-
-import java.sql.SQLException;
+import threads.DepositThread;
+import threads.TransferThread;
+import threads.WithdrawThread;
 import java.util.Scanner;
 
 public class Main {
@@ -39,11 +39,8 @@ public class Main {
                     int depositAccount = scanner.nextInt();
                     System.out.print("Enter amount to deposit: ");
                     double depositAmount = scanner.nextDouble();
-                    try {
-                        Transaction.deposit(depositAccount, depositAmount);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    Thread depositThread = new DepositThread(depositAccount, depositAmount);
+                    depositThread.start();
                     break;
 
                 case 3:
@@ -51,11 +48,9 @@ public class Main {
                     int withdrawAccount = scanner.nextInt();
                     System.out.print("Enter amount to withdraw: ");
                     double withdrawAmount = scanner.nextDouble();
-                    try {
-                        Transaction.withdraw(withdrawAccount, withdrawAmount);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    Thread withdrawThread = new WithdrawThread(withdrawAccount, withdrawAmount);
+                    withdrawThread.start();
+
                     break;
 
                 case 4:
@@ -65,11 +60,8 @@ public class Main {
                     int toAccount = scanner.nextInt();
                     System.out.print("Enter amount to transfer: ");
                     double transferAmount = scanner.nextDouble();
-                    try {
-                        Transaction.transfer(fromAccount, toAccount, transferAmount);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    Thread transferThread = new TransferThread(fromAccount, toAccount, transferAmount);
+                    transferThread.start();
                     break;
 
                 case 5:
