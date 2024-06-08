@@ -1,7 +1,7 @@
-import account.Account;
-import threads.DepositThread;
-import threads.TransferThread;
-import threads.WithdrawThread;
+import controller.Account;
+import thread.DepositThread;
+import thread.TransferThread;
+import thread.WithdrawThread;
 import java.util.Scanner;
 
 public class Main {

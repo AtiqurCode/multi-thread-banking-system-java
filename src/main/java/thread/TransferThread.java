@@ -1,6 +1,6 @@
-package threads;
+package thread;
 
-import transaction.Transaction;
+import controller.Transaction;
 import java.sql.SQLException;
 
 public class TransferThread extends Thread {

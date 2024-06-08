@@ -1,14 +1,13 @@
-package threads;
+package thread;
 
-import transaction.Transaction;
-
+import controller.Transaction;
 import java.sql.SQLException;
 
-public class DepositThread extends Thread {
+public class WithdrawThread extends Thread {
     private int accountId;
     private double amount;
 
-    public DepositThread(int accountId, double amount) {
+    public WithdrawThread(int accountId, double amount) {
         this.accountId = accountId;
         this.amount = amount;
     }
@@ -16,7 +15,7 @@ public class DepositThread extends Thread {
     @Override
     public void run() {
         try {
-            Transaction.deposit(accountId, amount);
+            Transaction.withdraw(accountId, amount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
