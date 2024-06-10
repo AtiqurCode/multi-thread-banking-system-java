@@ -16,7 +16,7 @@ public class Main {
             System.out.println("4. Transfer");
             System.out.println("5. Check Account & Balance");
             System.out.println("6. Exit");
-            System.out.print("Enter the option number: ");
+            System.out.println("Enter the option number: ");
             int option = scanner.nextInt();
 
             switch (option) {
@@ -41,7 +41,7 @@ public class Main {
                     double depositAmount = scanner.nextDouble();
                     Thread depositThread = new DepositThread(depositAccount, depositAmount);
                     depositThread.start();
-                    break;
+                    return;
 
                 case 3:
                     System.out.print("Enter account number to withdraw: ");
@@ -50,8 +50,7 @@ public class Main {
                     double withdrawAmount = scanner.nextDouble();
                     Thread withdrawThread = new WithdrawThread(withdrawAccount, withdrawAmount);
                     withdrawThread.start();
-
-                    break;
+                    return;
 
                 case 4:
                     System.out.print("Enter sender account number: ");
@@ -62,7 +61,7 @@ public class Main {
                     double transferAmount = scanner.nextDouble();
                     Thread transferThread = new TransferThread(fromAccount, toAccount, transferAmount);
                     transferThread.start();
-                    break;
+                    return;
 
                 case 5:
                     System.out.print("Enter account number to check: ");

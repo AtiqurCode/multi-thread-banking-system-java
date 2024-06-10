@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import connection.MySQLConnection;
-
+import thread.DepositThread;
 
 public class Account {
     public static void createAccount(String accountHolderName, double balance) {
@@ -20,7 +19,7 @@ public class Account {
             String sql = "INSERT INTO accounts (account_holder_name, balance) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, accountHolderName);
-            preparedStatement.setDouble(2, balance);
+            preparedStatement.setDouble(2, 0.0);
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -28,6 +27,11 @@ public class Account {
                 if (resultSet.next()) {
                     int accountId = resultSet.getInt(1);
                     System.out.println("Account Created successfully. Account ID: " + accountId);
+
+                    if (balance > 0) {
+                        Thread depositThread = new DepositThread(accountId, balance);
+                        depositThread.start();
+                    }
                 }
             } else {
                 System.out.println("Sorry! Failed to create the account.");
@@ -76,7 +80,6 @@ public class Account {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            // Do not close the connection; it should remain open for reuse
         }
     }
 }

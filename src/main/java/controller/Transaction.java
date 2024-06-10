@@ -6,8 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
-
 
 public class Transaction {
     public synchronized static void deposit(int accountId, double amount) throws SQLException {
@@ -26,7 +24,7 @@ public class Transaction {
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 logTransaction(connection, accountId, "DEPOSIT", amount);
-                connection.commit();
+                connection.commit(); // if pass all query successful then commit all query
                 System.out.println("Deposit successful.");
             } else {
                 connection.rollback();
@@ -41,7 +39,6 @@ public class Transaction {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
-            // Do not close the connection; it should remain open for reuse
         }
     }
 
@@ -132,11 +129,10 @@ public class Transaction {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
-            // Do not close the connection; it should remain open for reuse
         }
     }
 
-    // Helper method to get account balance
+    // get account balance
     private static double getBalance(Connection connection, int accountId) throws SQLException {
         String sql = "SELECT balance FROM Accounts WHERE account_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -151,7 +147,7 @@ public class Transaction {
         }
     }
 
-    // Helper method to log transactions
+    // log the transactions
     private static void logTransaction(Connection connection, int accountId, String type, double amount) throws SQLException {
         String sql = "INSERT INTO Transactions (account_id, transaction_type, amount, created_at, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
